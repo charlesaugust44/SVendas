@@ -1,0 +1,9 @@
+<form action="algum/{{user.getId}}">
+    <input name="nome" value="{{user.getNome}}"><br>
+    <input name="usuario" value="{{user.getUsuario}}"><br>
+    <input name="senha" value="{{user.getSenha}}"><br>
+    <input name="email" value="{{user.getEmail}}"><br>
+    <select name="usuarios">
+        {{iterator.users@@<option value="[[getId]]">[[getNome]]</option>}}
+    </select>
+</form>
