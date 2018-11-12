@@ -45,6 +45,7 @@
                 <div class="col col-lg-6">
                     <label for="inputCpf">CPF do Cliente</label>
                     <input class="form-control" id="inputCpf" name="cpf" placeholder="___.___.___-__" required>
+                    <div class="validationError" data-for="inputCpf"></div>
                 </div>
                 <div class="col col-lg-6">
                     <label for="inputGraduacao">Graduação</label>
@@ -68,7 +69,7 @@
 
                 </tbody>
             </table>
-            <button class="btn btn-success float-right" onclick="finalizar()">Finalizar</button>
+            <button class="btn btn-success float-right" id="finalizar" onclick="finalizar()">Finalizar</button>
             <button class="btn btn-warning float-right" onclick="limpar()">Limpar</button>
             <br>
             <br>
@@ -79,11 +80,14 @@
 {{include.bottom}}
 
 <script>
-    let total, desconto = false;
+    let total, desconto = false, qtdProdutos = 0;
+    $("#finalizar").attr("disabled", "disabled");
+
     let refreshTooltipEvent = function () {
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
         });
+
     };
 
     function refreshEstoque() {
@@ -97,13 +101,40 @@
         });
     }
 
+    function validateCPF(cpf) {
+        var Soma;
+        var Resto;
+        Soma = 0;
+
+        if (cpf === "00000000000") return false;
+
+        for (let i = 1; i <= 9; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+        Resto = (Soma * 10) % 11;
+
+        if ((Resto === 10) || (Resto === 11)) Resto = 0;
+        if (Resto !== parseInt(cpf.substring(9, 10))) return false;
+
+        Soma = 0;
+        for (let i = 1; i <= 10; i++) Soma = Soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+        Resto = (Soma * 10) % 11;
+
+        if ((Resto === 10) || (Resto === 11)) Resto = 0;
+        if (Resto !== parseInt(cpf.substring(10, 11))) return false;
+        return true;
+    }
+
     function refreshTable() {
+        if (qtdProdutos == 0)
+            $("#finalizar").attr("disabled", "disabled");
+        else
+            $("#finalizar").removeAttr("disabled");
+
         $tbody = $("#tbody");
         total = 0;
         let result = "";
 
         estoque.forEach(function (value, index, array) {
-            if (value.qtdCompra != 0) {
+            if (value.qtdCompra > 0) {
                 let preco = value.preco;
 
                 if (desconto)
@@ -114,13 +145,13 @@
 
                 result +=
                     "<tr><td>" + value.nome +
-                    "</td><td>R$" + preco +
+                    "</td><td>R$" + preco.toFixed(2) +
                     "</td><td>x" + value.qtdCompra +
-                    "</td><td>R$" + subtotal +
+                    "</td><td>R$" + subtotal.toFixed(2) +
                     "</td><td><button class='btn btn-success' onclick='minus(" + index +
-                    ")' data-toggle='tooltip' data-placement='top' title='Diminuir'><i class='fa fa-minus'></i></button>" +
+                    ")'><i class='fa fa-minus'></i></button>" +
                     "<button class='btn btn-danger' onclick='remove(" + index +
-                    ")' data-toggle='tooltip' data-placement='top' title='Remover'><i class='fa fa-times'></i></button></td></tr>";
+                    ")'><i class='fa fa-times'></i></button></td></tr>";
             }
         });
 
@@ -131,20 +162,30 @@
 
     function minus(id) {
         estoque[id].qtdCompra--;
+        qtdProdutos--;
         refreshTable();
     }
 
     function remove(id) {
+        qtdProdutos -= estoque[id].qtdCompra;
         estoque[id].qtdCompra = 0;
         refreshTable();
     }
 
     function add(id) {
         estoque[id].qtdCompra++;
+        qtdProdutos++;
         refreshTable();
     }
 
     function finalizar() {
+        let cpf = $("#inputCpf").cleanVal();
+
+        if (!validateCPF(cpf)) {
+            $("#inputCpf").addClass("inputError");
+            $(".validationError[data-for=inputCpf]").html("Informe um CPF valido!");
+        }
+
 
     }
 
@@ -152,6 +193,8 @@
         estoque.forEach(function (value, index, array) {
             value.qtdCompra = 0;
         });
+        $("#inputCpf").val("");
+        qtdProdutos = 0;
         refreshTable();
     }
 
@@ -163,4 +206,7 @@
     });
 
     refreshEstoque();
+    $("#inputCpf").mask('000.000.000-00', {
+        placeholder: "___.___.___-__"
+    });
 </script>
