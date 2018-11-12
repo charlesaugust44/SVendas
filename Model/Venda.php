@@ -4,23 +4,21 @@ namespace App\Model;
 
 use App\Framework\Model\Table;
 
-class Usuario extends Table
+class Venda extends Table
 {
 
     private
         $id,
-        $usuario,
-        $senha,
-        $nome;
+        $total,
+        $eventoId,
+        $clienteId;
 
     /**
-     * Usuario constructor.
+     * Venda constructor.
      */
     public function __construct()
     {
         parent::__construct();
-
-        $this->columnType("nome","object");
     }
 
     /**
@@ -42,49 +40,49 @@ class Usuario extends Table
     /**
      * @return mixed
      */
-    public function getUsuario()
+    public function getTotal()
     {
-        return $this->usuario;
+        return $this->total;
     }
 
     /**
-     * @param mixed $usuario
+     * @param mixed $total
      */
-    public function setUsuario($usuario)
+    public function setTotal($total)
     {
-        $this->usuario = $usuario;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSenha()
-    {
-        return $this->senha;
-    }
-
-    /**
-     * @param mixed $senha
-     */
-    public function setSenha($senha)
-    {
-        $this->senha = $senha;
+        $this->total = $total;
     }
 
     /**
      * @return mixed
      */
-    public function getNome()
+    public function getEventoId()
     {
-        return $this->nome;
+        return $this->eventoId;
     }
 
     /**
-     * @param mixed $nome
+     * @param mixed $eventoId
      */
-    public function setNome($nome)
+    public function setEventoId($eventoId)
     {
-        $this->nome = $nome;
+        $this->eventoId = $eventoId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClienteId()
+    {
+        return $this->clienteId;
+    }
+
+    /**
+     * @param mixed $clienteId
+     */
+    public function setClienteId($clienteId)
+    {
+        $this->clienteId = $clienteId;
     }
 
 

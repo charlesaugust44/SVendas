@@ -1,0 +1,53 @@
+{{include.Top}}
+
+<style>
+    .validationError {
+        color: #f00;
+        margin: 3px;
+        font-size: 11pt;
+    }
+
+    .inputError {
+        border-color: #f00;
+    }
+</style>
+
+
+<button class="btn btn-warning controlBtn" onclick="goto('/Evento/Lista')">
+    <i class=" fa fa-chevron-left"></i>&emsp;
+    Voltar
+</button>
+
+<form action="/Evento/Cadastrar" method="post" style="max-width: 500px" id="eventoForm">
+    <div class="form-group">
+        <label for="nomeInput">Nome*</label>
+        <input class="form-control eventoInput" id="nomeInput" name="nome" placeholder="Nome do Evento"
+               data-required="true">
+        <div class="validationError" data-for="nomeInput"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="cidadeInput">Cidade*</label>
+        <input class="form-control eventoInput" id="cidadeInput" name="cidade" placeholder="Local de Realização"
+               data-required="true">
+        <div class="validationError" data-for="cidadeInput"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="dataInput">Data*</label>
+        <input class="form-control eventoInput" id="dataInput" name="data" type="date" data-required="true">
+        <div class="validationError" data-for="dataInput"></div>
+    </div>
+    <button type="submit" class="btn btn-success float-right">Salvar</button>
+    <button type="reset" class="btn btn-warning float-right">Limpar</button>
+</form>
+
+</div>
+
+{{include.ModalDelete}}
+<script>
+    function validationFormSuccess() {
+        alert(0);
+    }
+</script>
+{{include.Bottom}}

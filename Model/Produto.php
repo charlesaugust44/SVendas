@@ -4,23 +4,21 @@ namespace App\Model;
 
 use App\Framework\Model\Table;
 
-class Usuario extends Table
+class Produto extends Table
 {
 
     private
         $id,
-        $usuario,
-        $senha,
-        $nome;
+        $nome,
+        $preco,
+        $precoDesconto;
 
     /**
-     * Usuario constructor.
+     * Produto constructor.
      */
     public function __construct()
     {
         parent::__construct();
-
-        $this->columnType("nome","object");
     }
 
     /**
@@ -42,38 +40,6 @@ class Usuario extends Table
     /**
      * @return mixed
      */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * @param mixed $usuario
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSenha()
-    {
-        return $this->senha;
-    }
-
-    /**
-     * @param mixed $senha
-     */
-    public function setSenha($senha)
-    {
-        $this->senha = $senha;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getNome()
     {
         return $this->nome;
@@ -85,6 +51,38 @@ class Usuario extends Table
     public function setNome($nome)
     {
         $this->nome = $nome;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPreco()
+    {
+        return $this->preco;
+    }
+
+    /**
+     * @param mixed $preco
+     */
+    public function setPreco($preco)
+    {
+        $this->preco = $preco;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrecoDesconto()
+    {
+        return $this->precoDesconto;
+    }
+
+    /**
+     * @param mixed $precoDesconto
+     */
+    public function setPrecoDesconto($precoDesconto)
+    {
+        $this->precoDesconto = $precoDesconto;
     }
 
 

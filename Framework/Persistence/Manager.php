@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Persistence;
+namespace App\Framework\Persistence;
 
 use \PDO;
 
@@ -47,7 +47,7 @@ class Manager extends Database
         $statement->execute();
     }
 
-    public function select($object, $whereValue = null, $field = "id")
+    public function select($object, $whereValue = null, $field = "id", $whereValue2 = null, $field2 = null)
     {
         $dataArray = $object->toArray();
         $tableName = $object->className();
@@ -67,11 +67,22 @@ class Manager extends Database
             $statement = $this->cnx->prepare($sql);
             $statement->execute();
         } else {
-            $sql = "SELECT $columns FROM $tableName WHERE $field = :whereValue";
+            if($whereValue2 == null) {
+                $sql = "SELECT $columns FROM $tableName WHERE $field = :whereValue";
 
-            $statement = $this->cnx->prepare($sql);
-            $statement->bindValue(":whereValue", $whereValue);
-            $statement->execute();
+                $statement = $this->cnx->prepare($sql);
+                $statement->bindValue(":whereValue", $whereValue);
+                $statement->execute();
+            }
+            else
+            {
+                $sql = "SELECT $columns FROM $tableName WHERE $field = :whereValue AND $field2 = :whereValue2";
+
+                $statement = $this->cnx->prepare($sql);
+                $statement->bindValue(":whereValue", $whereValue);
+                $statement->bindValue(":whereValue2", $whereValue2);
+                $statement->execute();
+            }
         }
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);

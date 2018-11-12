@@ -1,7 +1,6 @@
 <?php
 
-namespace App;
-
+namespace App\Framework\Authentication;
 
 session_start();
 

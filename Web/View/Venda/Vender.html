@@ -1,0 +1,166 @@
+{{include.top}}
+
+<style>
+    .col {
+        padding: 10px;
+    }
+
+    table .btn-success {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    td, th {
+        border-color: #adadad !important;
+    }
+
+    tbody {
+        border: none !important;
+    }
+
+    .bgContainer {
+        padding: 20px;
+        min-height: 70vh;
+        background: rgba(0, 0, 66, 0.06);
+        border-radius: 20px;
+    }
+</style>
+
+<div class="row">
+    <button class="btn btn-warning float-left controlBtn" onclick="goto('/Evento/Lista')">
+        <i class="fa fa-chevron-left"></i>&emsp;
+        Voltar
+    </button>
+</div>
+
+<div class="row">
+    <div class="col col-lg-4">
+        <div class="bgContainer text-center" id="listaEstoque">
+            <i class="fa fa-cog fa-spin" style="font-size: 3rem; color: #aaa"></i>
+        </div>
+    </div>
+    <div class="col col-lg-8">
+        <div class="bgContainer">
+            <div class="row" style="margin-bottom: 30px">
+                <div class="col col-lg-6">
+                    <label for="inputCpf">CPF do Cliente</label>
+                    <input class="form-control" id="inputCpf" name="cpf" placeholder="___.___.___-__" required>
+                </div>
+                <div class="col col-lg-6">
+                    <label for="inputGraduacao">Graduação</label>
+                    <select class="form-control" id="inputGraduacao" name="graduacao">
+                        {{iterator.graduacao@@
+                        <option value="[[getId]]" data-desconto="[[getDesconto]]">[[getNome]]</option>
+                        }}
+                    </select>
+                </div>
+            </div>
+            <h3 id="total">Total: R$ 0</h3>
+            <table class="table">
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço Unid.</th>
+                    <th>Qtd.</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+            <button class="btn btn-success float-right" onclick="finalizar()">Finalizar</button>
+            <button class="btn btn-warning float-right" onclick="limpar()">Limpar</button>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+
+{{include.bottom}}
+
+<script>
+    let total, desconto = false;
+    let refreshTooltipEvent = function () {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        });
+    };
+
+    function refreshEstoque() {
+        $("#listaEstoque").html("<i class=\"fa fa-cog fa-spin\" style=\"font-size: 3rem; color: #aaa\"></i>");
+        $.ajax({
+            url: "/Venda/ListaEstoque/{{echo.id}}",
+            success: function (e) {
+                $("#listaEstoque").html(e);
+                refreshTooltipEvent();
+            }
+        });
+    }
+
+    function refreshTable() {
+        $tbody = $("#tbody");
+        total = 0;
+        let result = "";
+
+        estoque.forEach(function (value, index, array) {
+            if (value.qtdCompra != 0) {
+                let preco = value.preco;
+
+                if (desconto)
+                    preco -= value.precoDesc;
+
+                let subtotal = preco * value.qtdCompra;
+                total += subtotal;
+
+                result +=
+                    "<tr><td>" + value.nome +
+                    "</td><td>R$" + preco +
+                    "</td><td>x" + value.qtdCompra +
+                    "</td><td>R$" + subtotal +
+                    "</td><td><button class='btn btn-success' onclick='minus(" + index +
+                    ")' data-toggle='tooltip' data-placement='top' title='Diminuir'><i class='fa fa-minus'></i></button>" +
+                    "<button class='btn btn-danger' onclick='remove(" + index +
+                    ")' data-toggle='tooltip' data-placement='top' title='Remover'><i class='fa fa-times'></i></button></td></tr>";
+            }
+        });
+
+        $tbody.html(result);
+        $("#total").html("Total: R$ " + total.toFixed(2));
+        refreshTooltipEvent();
+    }
+
+    function minus(id) {
+        estoque[id].qtdCompra--;
+        refreshTable();
+    }
+
+    function remove(id) {
+        estoque[id].qtdCompra = 0;
+        refreshTable();
+    }
+
+    function add(id) {
+        estoque[id].qtdCompra++;
+        refreshTable();
+    }
+
+    function finalizar() {
+
+    }
+
+    function limpar() {
+        estoque.forEach(function (value, index, array) {
+            value.qtdCompra = 0;
+        });
+        refreshTable();
+    }
+
+    $("#inputGraduacao").change(function (e) {
+        let desc = $("#inputGraduacao option[value=" + $(this).val() + "]").attr("data-desconto");
+
+        desconto = (desc == 0) ? false : true;
+        refreshTable();
+    });
+
+    refreshEstoque();
+</script>

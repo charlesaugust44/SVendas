@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{echo.title}}</title>
+
+    <link href="$css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
+            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
+            crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .btn {
+            margin: 4px;
+        }
+
+        .controlBtn {
+            margin-bottom: 40px;
+        }
+
+        .btn:hover {
+            cursor: pointer;
+        }
+
+        .containerBox {
+            position: fixed;
+            top: 4rem;
+            height: calc(100vh - 4rem);
+            width: 100vw;
+            padding-top: 3rem;
+            overflow-x: scroll;
+            padding-left: 10vw;
+            padding-right: 10vw;
+        }
+
+        .containerBox td .btn {
+            width: 2.6rem;
+        }
+
+        .navTop {
+            padding-top: .8rem;
+            height: 4rem;
+            color: white;
+            width: 100%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            background: #00002C;
+        }
+
+        @media (max-width: 400px) {
+            .containerBox {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navTop">
+    {{echo.title}}
+</div>
+
+<div class="containerBox">

@@ -1,0 +1,51 @@
+{{include.Top}}
+
+{{if.save@@
+<div class="alert alert-success" role="alert" id="alertSaved">
+    As alterações foram salvas!
+</div>
+}}
+
+<div class="alert alert-warning" role="alert" style="display: none" id="alertChange">
+    Atenção! as modificações ainda não foram salvas.
+</div>
+
+<div>
+    <button class="btn btn-warning float-left controlBtn" onclick="goto('/Evento/Lista')">
+        <i class="fa fa-chevron-left"></i>&emsp;
+        Voltar
+    </button>
+</div>
+
+<form action="/Estoque/Cadastrar/{{echo.idEvento}}" method="post" style="max-width: 500px">
+    <table class="table">
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+        </tr>
+
+        {{iterator.produtos@@
+        <tr>
+            <td>[[nome]]</td>
+            <td>
+                <input type="hidden" name="prv[ [[id]] ]" value="[[qtd]]">
+                <input type="number" name="qtd[ [[id]] ]" min="0" value="[[qtd]]" style="width:6rem;padding-left:1rem;text-align: center" class="form-control">
+            </td>
+        </tr>
+        }}
+    </table>
+
+    <button class="btn btn-success float-right" type="submit">Salvar</button>
+    <button class="btn btn-warning float-right" type="reset">Limpar</button>
+</form>
+{{include.Bottom}}
+<script>
+    $("input").change(function (e) {
+        $("#alertChange").slideDown(350);
+        $(e.target).css({outlineColor: "Orange", boxShadow: "Orange 0 0 4px"});
+    });
+
+    setTimeout(function () {
+        $("#alertSaved").slideUp(350);
+    },3000);
+</script>

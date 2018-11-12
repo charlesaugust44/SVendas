@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Persistence;
+namespace App\Framework\Persistence;
 
 use \PDO;
+use \PDOException;
 
 class Database
 {
@@ -13,7 +14,7 @@ class Database
 
     public function __construct()
     {
-        $this->ini = parse_ini_file('database_config.ini');
+        $this->ini = parse_ini_file('Persistence/database_config.ini');
         $this->dsn =
             'mysql:dbname=' . $this->ini['db'] .
             ';host=' . $this->ini['host'] .

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="$images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="$css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="$css/Custom/UsuarioLogin.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form" method="post" action="/Usuario/Authenticate">
+					<span class="login100-form-title p-b-26">
+						Sistema
+                        <br><br>
+					</span>
+
+                <div class="error {{echo.error}}">Senha ou usuario incorretos!</div>
+
+                <div class="wrap-input100">
+                    <input class="input100" type="text" name="usuario">
+                    <span class="focus-input100 {{echo.error}}" data-placeholder="Nome de Usuário" autocomplete="off"></span>
+                </div>
+
+                <div class="wrap-input100">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+                    <input class="input100" type="password" name="senha">
+                    <span class="focus-input100 {{echo.error}}" data-placeholder="Senha" autocomplete="off"></span>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--===============================================================================================-->
+<script src="$js/jquery.min.js"></script>
+<!--===============================================================================================-->
+<script src="$js/Custom/UsuarioLogin.js"></script>

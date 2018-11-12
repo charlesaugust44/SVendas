@@ -1,0 +1,61 @@
+{{include.Top}}
+
+<style>
+
+</style>
+
+
+<button class="btn btn-warning float-left controlBtn" onclick="goto('/Usuario/Logout')">
+    <i class="fa fa-sign-out-alt"></i>&emsp;
+    Sair
+</button>
+
+<button class="btn btn-success float-right controlBtn" onclick="goto('/Evento/ShowCadastrar')">
+    <i class="fa fa-plus"></i>&emsp;
+    Cadastrar
+</button>
+
+
+<table class="table">
+    <tr>
+        <th>Nome</th>
+        <th>Cidade</th>
+        <th>Data</th>
+        <th></th>
+    </tr>
+
+    {{iterator.evento@@
+    <tr>
+        <td>[[getNome]]</td>
+        <td>[[getCidade]]</td>
+        <td>[[getData]]</td>
+        <td align="right">
+            <button class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Gerenciar Estoque"
+                    onclick="goto('/Estoque/Gerenciar/[[getId]]')">
+                <i class="fa fa-box"></i>
+            </button>
+            <button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Vender Neste Evento"
+                    onclick="goto('/Venda/Vender/[[getId]]')">
+                <i class="fa fa-dollar-sign"></i>
+            </button>
+            <button class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Gerar Relatorio"
+                    onclick="goto('/Evento/ConfrimarRelatorio/[[getId]]')">
+                <i class="fa fa-list"></i>
+            </button>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#modalDeletar" onclick="s2d([[getId]])">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </tr>
+    }}
+</table>
+
+</div>
+{{include.ModalDelete}}
+{{include.Bottom}}
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Web\View;
+namespace App\Framework\View;
 
 class Alias
 {
@@ -14,8 +14,9 @@ class Alias
         $this->frame = $frame;
     }
 
-    public function replace(&$source,$value){
-        $source = str_replace("{{".$this->fullName.(($this->frame == null)? "" : "@@".$this->frame)."}}",$value,$source);
+    public function replace(&$source, $value)
+    {
+        $source = str_replace("{{" . $this->fullName . (($this->frame == null) ? "" : "@@" . $this->frame) . "}}", $value, $source);
     }
 
     public function getFullName()
@@ -23,11 +24,13 @@ class Alias
         return $this->fullName;
     }
 
-    public function getName(){
-        return explode(".",$this->getFullName())[1];
+    public function getName()
+    {
+        return explode(".", $this->getFullName())[1];
     }
 
-    public function getFrame(){
+    public function getFrame()
+    {
         return $this->frame;
     }
 }

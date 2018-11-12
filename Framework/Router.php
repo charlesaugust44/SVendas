@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Framework;
 
 
 class Router
@@ -33,16 +33,27 @@ class Router
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
 
+        $changeUri = function (&$uri, $newUri) {
+            $temp = $newUri;
+            if (count($uri) > 1) {
+                for ($i = 1; $i < count($uri); $i++)
+                    array_push($temp, $uri[$i]);
+
+
+            }
+            $uri = $temp;
+        };
+
         $uri = trim($this->request, "/");
         $uri = explode("/", $uri);
         switch ($uri[0]) {
             case "":
-                $uri = $this->home;
+                $changeUri($uri, $this->home);
                 break;
             case "Login":
             case "login":
             case "admin":
-                $uri = $this->login;
+                $changeUri($uri, $this->login);
         }
 
         $controllerNamespacePath = "App\\Web\\Controller\\Controller" . $uri[0];

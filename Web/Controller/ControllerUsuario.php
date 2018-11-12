@@ -2,10 +2,11 @@
 
 namespace App\Web\Controller;
 
-use App\Persistence\Manager;
+use App\Framework\Persistence\Manager;
 use App\Model\Usuario;
-use App\Web\View\View;
-use App\Auth;
+use App\Framework\View\View;
+use App\Framework\Authentication\Auth;
+use App\Framework\Utils;
 
 class ControllerUsuario
 {
@@ -18,29 +19,32 @@ class ControllerUsuario
         $this->view = new View($this);
     }
 
-    public function actionShowEditar($param)
+    public function actionAuthenticate($param)
     {
-        $user = $this->manager->select(new Usuario());
+        $usuario = $_POST["usuario"];
+        $senha = $_POST["senha"];
 
-        $this->view->load("ShowEditar");
-        $this->view->insertData("user",$user[0]);
-        $this->view->insertData("users",$user,true);
-        $this->view->show();
+        $user = $this->manager->select(new Usuario(), $usuario, "usuario");
+
+        $userExist = count($user) == 1;
+        $passMatch = Utils::encrypt($senha) == $user[0]->getSenha();
+
+        if (($userExist) && ($passMatch)) {
+            Auth::createSession(Auth::$LVL1, $user[0]->getNome(), $user[0]->getId());
+            header("location: /Evento/Lista");
+        } else
+            header("location: /Login/Error");
     }
 
     public function actionLogin($param)
     {
-        $u = new Usuario(null,"aaa","aaa","aaaa","a@aa");
+        $error = "";
+        if (isset($param[0]) && $param[0] == "Error")
+            $error = "inputError";
 
-        $arr = $this->manager->select($u);
-
-        foreach ($arr as $a)
-        {
-            print_r($a->toArray()["data"]);
-            echo "<br>";
-        }
-
-        //$this->view->call('login', $this);
+        $this->view->load("Login");
+        $this->view->parseEcho("error", $error);
+        $this->view->show();
     }
 
     public function actionLogout($param)
