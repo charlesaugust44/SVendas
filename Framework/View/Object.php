@@ -5,8 +5,7 @@ namespace App\Framework\View;
 class Object extends Alias
 {
     private
-        $method,
-        $data;
+        $method;
 
     public function __construct($frame)
     {
@@ -24,6 +23,6 @@ class Object extends Alias
 
     public function parseResult(&$source, $data)
     {
-        $source = str_replace("{{" . $this->frame . "}}",$data->{method}(),$source);
+        $source = str_replace("{{" . $this->frame . "}}",$data->{$this->method}(),$source);
     }
 }

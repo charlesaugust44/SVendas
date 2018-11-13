@@ -179,14 +179,15 @@
     }
 
     function finalizar() {
-        let cpf = $("#inputCpf").cleanVal();
+        $iCpf = $("#inputCpf");
+        let cpf = $iCpf.cleanVal();
 
         if (!validateCPF(cpf)) {
-            $("#inputCpf").addClass("inputError");
+            $iCpf.addClass("inputError");
             $(".validationError[data-for=inputCpf]").html("Informe um CPF valido!");
         }
 
-
+        location.href = "/Cliente/ShowCadastrar";
     }
 
     function limpar() {

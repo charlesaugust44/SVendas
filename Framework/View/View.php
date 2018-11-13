@@ -74,7 +74,11 @@ class View
                             break;
                         default:
                             $alias = new Object($frame);
-                            $this->aliases[$alias->getName()] = $alias;
+
+                            if (!isset($this->aliases[$alias->getName()]))
+                                $this->aliases[$alias->getName()] = Array();
+
+                            array_push($this->aliases[$alias->getName()], $alias);
                             break;
                     }
                 }
@@ -104,7 +108,9 @@ class View
     public function parseObject($index, $data)
     {
         $alias = $this->aliases[$index];
-        $alias->parseResult($this->source, $data);
+
+        foreach ($alias as $a)
+            $a->parseResult($this->source, $data);
     }
 
     public function show()

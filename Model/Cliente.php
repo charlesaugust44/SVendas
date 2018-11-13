@@ -13,6 +13,7 @@ class Cliente extends Table
         $idh,
         $nome,
         $email,
+        $telefone,
         $graduacaoId;
 
     /**
@@ -21,6 +22,22 @@ class Cliente extends Table
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelefone()
+    {
+        return $this->telefone;
+    }
+
+    /**
+     * @param mixed $telefone
+     */
+    public function setTelefone($telefone)
+    {
+        $this->telefone = $telefone;
     }
 
     /**
