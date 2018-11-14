@@ -45,6 +45,11 @@ class Manager extends Database
             $statement->bindValue($aliasArray[$i], $d);
 
         $statement->execute();
+
+        $sql = "SELECT LAST_INSERT_ID()";
+        $statement = $this->cnx->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC)[0]["LAST_INSERT_ID()"];
     }
 
     public function select($object, $whereValue = null, $field = "id", $whereValue2 = null, $field2 = null)
@@ -96,7 +101,7 @@ class Manager extends Database
             }
         }
 
-        return $return;
+        return (count($return) == 0)? null : $return;
     }
 
     public function update($object, $whereValue, $field = "id")

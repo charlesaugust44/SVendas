@@ -18,10 +18,22 @@ class Cliente extends Table
 
     /**
      * Cliente constructor.
+     * @param $cpf
+     * @param $idh
+     * @param $nome
+     * @param $email
+     * @param $telefone
+     * @param $graduacaoId
      */
-    public function __construct()
+    public function __construct($cpf = null, $idh = null, $nome = null, $email = null, $telefone = null, $graduacaoId = null)
     {
         parent::__construct();
+        $this->cpf = $cpf;
+        $this->idh = $idh;
+        $this->nome = $nome;
+        $this->email = $email;
+        $this->telefone = $telefone;
+        $this->graduacaoId = $graduacaoId;
     }
 
     /**

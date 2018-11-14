@@ -15,11 +15,18 @@ class Venda extends Table
 
     /**
      * Venda constructor.
+     * @param $total
+     * @param $eventoId
+     * @param $clienteId
      */
-    public function __construct()
+    public function __construct($total = null, $eventoId = null, $clienteId = null)
     {
         parent::__construct();
+        $this->total = $total;
+        $this->eventoId = $eventoId;
+        $this->clienteId = $clienteId;
     }
+
 
     /**
      * @return mixed

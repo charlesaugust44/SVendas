@@ -25,12 +25,12 @@ class Iterator extends Alias
 
     public function parseResult(&$source, $data)
     {
+        $iterated = "";
         if (count($data) > 0) {
             $frame = explode("@@", $this->frame)[1];
 
             $start = -2;
             $end = null;
-            $iterated = "";
             $internalAlias = Array();
 
             while (true) {
@@ -47,7 +47,8 @@ class Iterator extends Alias
                     break;
             }
 
-            $isArray = is_array($data[0]);
+            $k = key($data);
+            $isArray = is_array($data[$k]);
 
             $objResult = function ($d, $i) use ($isArray) {
                 if ($isArray)
@@ -64,7 +65,7 @@ class Iterator extends Alias
                 $iterated .= $r;
             }
 
-            $source = str_replace("{{" . $this->frame . "}}", $iterated, $source);
         }
+        $source = str_replace("{{" . $this->frame . "}}", $iterated, $source);
     }
 }

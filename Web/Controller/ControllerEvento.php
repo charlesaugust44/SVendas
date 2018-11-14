@@ -7,6 +7,7 @@ use App\Model\Evento;
 use App\Framework\View\View;
 use App\Framework\Authentication\Auth;
 use App\Framework\Utils;
+use App\Model\Venda;
 
 class ControllerEvento
 {
@@ -22,6 +23,18 @@ class ControllerEvento
     public function actionLista($param)
     {
         $eventos = $this->manager->select(new Evento());
+
+        if ($eventos != null) {
+            $eventos = array_map(function ($e) {
+                $vendas = $this->manager->select(new Venda());
+                $cld = ($e->getEncerrado()) ? "disabled" : "";
+                $del = ($vendas != null) ? "disabled" : "";
+
+                return Array("cld" => $cld, "del" => $del, "getNome" => $e->getNome(), "getCidade" => $e->getCidade(), "getData" => $e->getData(), "getId" => $e->getId());
+            }, $eventos);
+        } else
+            $eventos = Array();
+
 
         $this->view->load("Lista");
 

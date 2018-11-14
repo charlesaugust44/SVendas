@@ -16,10 +16,20 @@ class ListaVenda extends Table
 
     /**
      * ListaVenda constructor.
+     * @param $produtoId
+     * @param $vendaId
+     * @param $quantidade
+     * @param $subtotal
+     * @param $desconto
      */
-    public function __construct()
+    public function __construct($produtoId = null, $vendaId = null, $quantidade = null, $subtotal = null, $desconto = null)
     {
         parent::__construct();
+        $this->produtoId = $produtoId;
+        $this->vendaId = $vendaId;
+        $this->quantidade = $quantidade;
+        $this->subtotal = $subtotal;
+        $this->desconto = $desconto;
     }
 
     /**

@@ -9,10 +9,10 @@
     {{iterator.produtos@@
     <tr>
         <td>[[nome]]</td>
-        <td>[[qtd]]</td>
+        <td id="qtd[[id]]">[[qtd]]</td>
         <td>R$ [[preco]]</td>
         <td>
-            <button class="btn btn-success" onclick="add([[id]])" data-toggle="tooltip" data-placement="top" title="Adicionar para venda">
+            <button class="btn btn-success" id="btn[[id]]" onclick="add([[id]],this)" data-toggle="tooltip" data-placement="top" title="Adicionar para venda">
                 <i class="fa fa-plus"></i>
             </button>
         </td>
@@ -24,7 +24,7 @@
     let estoque = new Array();
 
     {{iterator.produtosVar@@
-            estoque[ [[id]] ] = {idProduto: [[idProduto]], nome: "[[nome]]", preco: [[preco]],precoDesc: [[precoDesc]], qtd: [[qtd]], qtdCompra: 0};
+            estoque[ [[id]] ] = {id:[[id]], idProduto: [[idProduto]], nome: "[[nome]]", preco: [[preco]],precoDesc: [[precoDesc]], qtd: [[qtd]], qtdCompra: 0};
     }}
 
 </script>

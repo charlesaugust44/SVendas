@@ -41,36 +41,39 @@
     </div>
     <div class="col col-lg-8">
         <div class="bgContainer">
-            <div class="row" style="margin-bottom: 30px">
-                <div class="col col-lg-6">
-                    <label for="inputCpf">CPF do Cliente</label>
-                    <input class="form-control" id="inputCpf" name="cpf" placeholder="___.___.___-__" required>
-                    <div class="validationError" data-for="inputCpf"></div>
+            <form action="/Cliente/ShowCadastrar/{{evento.getId}}" method="post" id="vendaForm">
+                <input id="inputTotal" type="hidden" value="0" name="total">
+                <div class="row" style="margin-bottom: 30px">
+                    <div class="col col-lg-6">
+                        <label for="inputCpf">CPF do Cliente</label>
+                        <input class="form-control" id="inputCpf" name="cpf" placeholder="___.___.___-__" required>
+                        <div class="validationError" data-for="inputCpf"></div>
+                    </div>
+                    <div class="col col-lg-6">
+                        <label for="inputGraduacao">Graduação</label>
+                        <select class="form-control" id="inputGraduacao" name="graduacao">
+                            {{iterator.graduacao@@
+                            <option value="[[getId]]" data-desconto="[[getDesconto]]">[[getNome]]</option>
+                            }}
+                        </select>
+                    </div>
                 </div>
-                <div class="col col-lg-6">
-                    <label for="inputGraduacao">Graduação</label>
-                    <select class="form-control" id="inputGraduacao" name="graduacao">
-                        {{iterator.graduacao@@
-                        <option value="[[getId]]" data-desconto="[[getDesconto]]">[[getNome]]</option>
-                        }}
-                    </select>
-                </div>
-            </div>
-            <h3 id="total">Total: R$ 0</h3>
-            <table class="table">
-                <tr>
-                    <th>Produto</th>
-                    <th>Preço Unid.</th>
-                    <th>Qtd.</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-                <tbody id="tbody">
+                <h3 id="total">Total: R$ 0</h3>
+                <table class="table">
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço Unid.</th>
+                        <th>Qtd.</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                    <tbody id="tbody">
 
-                </tbody>
-            </table>
-            <button class="btn btn-success float-right" id="finalizar" onclick="finalizar()">Finalizar</button>
-            <button class="btn btn-warning float-right" onclick="limpar()">Limpar</button>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-success float-right" id="finalizar">Finalizar</button>
+                <button class="btn btn-warning float-right" onclick="limpar()">Limpar</button>
+            </form>
             <br>
             <br>
         </div>
@@ -144,6 +147,12 @@
                 total += subtotal;
 
                 result +=
+                    "<input type='hidden' name='compra[" + index + "][id]' value='" + value.id + "'>" +
+                    "<input type='hidden' name='compra[" + index + "][produto]' value='" + value.nome + "'>" +
+                    "<input type='hidden' name='compra[" + index + "][idProduto]' value='" + value.idProduto + "'>" +
+                    "<input type='hidden' name='compra[" + index + "][preco]' value='" + value.preco.toFixed(2) + "'>" +
+                    "<input type='hidden' name='compra[" + index + "][qtd]' value='" + value.qtdCompra + "'>" +
+                    "<input type='hidden' name='compra[" + index + "][total]' value='" + subtotal.toFixed(2) + "'>" +
                     "<tr><td>" + value.nome +
                     "</td><td>R$" + preco.toFixed(2) +
                     "</td><td>x" + value.qtdCompra +
@@ -157,37 +166,62 @@
 
         $tbody.html(result);
         $("#total").html("Total: R$ " + total.toFixed(2));
+        $("#inputTotal").val(total.toFixed(2));
         refreshTooltipEvent();
     }
 
     function minus(id) {
+        $q = $("#qtd" + id);
+        let qtd = parseInt($q.html());
+        qtd++;
+        $q.html(qtd);
+
         estoque[id].qtdCompra--;
         qtdProdutos--;
         refreshTable();
+
+        $("#btn"+id).css({opacity: 1});
     }
 
     function remove(id) {
+        $q = $("#qtd" + id);
+        let qtd = parseInt($q.html());
+        qtd += estoque[id].qtdCompra;
+        $q.html(qtd);
+
         qtdProdutos -= estoque[id].qtdCompra;
         estoque[id].qtdCompra = 0;
         refreshTable();
+
+        $("#btn"+id).css({opacity: 1});
     }
 
-    function add(id) {
-        estoque[id].qtdCompra++;
-        qtdProdutos++;
-        refreshTable();
+    function add(id, btn) {
+        $q = $("#qtd" + id);
+        let qtd = parseInt($q.html());
+
+        if (qtd > 0) {
+            qtd--;
+            $q.html(qtd);
+            estoque[id].qtdCompra++;
+            qtdProdutos++;
+            refreshTable();
+        }
+
+        if (qtd == 0)
+            $(btn).css({opacity: 0.7});
     }
 
-    function finalizar() {
+    function finalizar(e) {
         $iCpf = $("#inputCpf");
         let cpf = $iCpf.cleanVal();
 
         if (!validateCPF(cpf)) {
+            e.preventDefault();
             $iCpf.addClass("inputError");
             $(".validationError[data-for=inputCpf]").html("Informe um CPF valido!");
         }
 
-        location.href = "/Cliente/ShowCadastrar";
     }
 
     function limpar() {
@@ -210,4 +244,5 @@
     $("#inputCpf").mask('000.000.000-00', {
         placeholder: "___.___.___-__"
     });
+    $("#vendaForm").submit(finalizar);
 </script>
