@@ -26,10 +26,9 @@ class ControllerUsuario
 
         $user = $this->manager->select(new Usuario(), $usuario, "usuario");
 
-        $userExist = count($user) == 1;
-        $passMatch = Utils::encrypt($senha) == $user[0]->getSenha();
+        $userExist = $user != null;
 
-        if (($userExist) && ($passMatch)) {
+        if (($userExist) && (Utils::encrypt($senha) == $user[0]->getSenha())) {
             Auth::createSession(Auth::$LVL1, $user[0]->getNome(), $user[0]->getId());
             header("location: /Evento/Lista");
         } else

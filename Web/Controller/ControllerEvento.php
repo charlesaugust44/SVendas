@@ -24,15 +24,18 @@ class ControllerEvento
     {
         $eventos = $this->manager->select(new Evento());
 
-        if ($eventos != null) {
-            $eventos = array_map(function ($e) {
+        if ($eventos != null)
+        {
+            $eventos = array_map(function ($e)
+            {
                 $vendas = $this->manager->select(new Venda());
                 $cld = ($e->getEncerrado()) ? "disabled" : "";
                 $del = ($vendas != null) ? "disabled" : "";
 
                 return Array("cld" => $cld, "del" => $del, "getNome" => $e->getNome(), "getCidade" => $e->getCidade(), "getData" => $e->getData(), "getId" => $e->getId());
             }, $eventos);
-        } else
+        }
+        else
             $eventos = Array();
 
 
@@ -72,12 +75,33 @@ class ControllerEvento
 
     public function actionDeletar($param)
     {
-        if (isset($param[0])) {
+        if (isset($param[0]))
+        {
             $id = intval($param[0]);
 
             $this->manager->delete(new Evento(), $id);
             header("location: /Evento/Lista");
-        } else
+        }
+        else
+            Utils::e404();
+    }
+
+    public function actionConfirmarRelatorio($param)
+    {
+        $idEvento = intval($param[0]);
+
+        $evento = $this->manager->select(new Evento(), $idEvento);
+
+        if ($evento != null)
+        {
+            $this->view->load("Confirmar");
+
+            $this->view->parseEcho("title","Confirmar Relatorio");
+            $this->view->parseEcho("nomeEvento",$evento[0]->getNome());
+
+            $this->view->show();
+        }
+        else
             Utils::e404();
     }
 }
