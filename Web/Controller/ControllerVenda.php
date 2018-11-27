@@ -19,6 +19,7 @@ class ControllerVenda
 
     public function __construct()
     {
+        Auth::sessionCheck(Auth::$LVL1);
         $this->manager = new Manager();
         $this->view = new View($this);
     }
@@ -48,8 +49,7 @@ class ControllerVenda
             Utils::e404();
     }
 
-    public
-    function actionListaEstoque($param)
+    public function actionListaEstoque($param)
     {
         if (isset($param[0])) {
             $id = intval($param[0]);

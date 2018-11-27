@@ -2,6 +2,7 @@
 
 namespace App\Web\Controller;
 
+use App\Framework\Authentication\Auth;
 use App\Framework\Persistence\Manager;
 use App\Model\Cliente;
 use App\Model\Estoque;
@@ -19,6 +20,7 @@ class ControllerCliente
 
     public function __construct()
     {
+        Auth::sessionCheck(Auth::$LVL1);
         $this->manager = new Manager();
         $this->view = new View($this);
     }
@@ -83,7 +85,7 @@ class ControllerCliente
         $desconto = $this->manager->select(new Graduacao(), $graduacao)[0]->getDesconto();
         $total = 0;
 
-        $compra = array_map(function ($c) use (&$total) {
+        $compra = array_map(function ($c) use (&$total, $desconto) {
             $com["qtd"] = intval($c["qtd"]);
             $com["id"] = intval($c["id"]);
             $com["idProduto"] = intval($c["idProduto"]);
@@ -94,7 +96,7 @@ class ControllerCliente
             $this->manager->update($estoque, $com["id"]);
             $produto = $this->manager->select(new Produto(), $com["idProduto"])[0];
 
-            $com["subtotal"] = ($produto->getPreco() - $produto->getPrecoDesconto()) * $com["qtd"];
+            $com["subtotal"] = ($produto->getPreco() - (($desconto == 1) ? $produto->getPrecoDesconto() : 0)) * $com["qtd"];
             $total += $com["subtotal"];
 
             return $com;

@@ -1,0 +1,44 @@
+{{include.Top}}
+
+<style>
+    iframe {
+        border: solid 1px #ccc;
+        width: 595pt;
+        height: 75vh;
+    }
+
+    .center {
+        width: 100%;
+        text-align: center;
+    }
+
+    .x{
+        width: 595pt;
+        margin: auto auto;
+    }
+</style>
+<div class="center">
+
+    <div class="x">
+    <button class="btn btn-warning float-left" onclick="goto('/Evento/Lista')">
+        <i class="fa fa-chevron-left"></i>&nbsp;
+        Voltar
+    </button>
+    <button class="btn btn-primary float-right" onclick="print()">
+        <i class="fa fa-print"></i>&nbsp;
+        Imprimir
+    </button>
+    </div>
+    <br>
+
+    <iframe src="/Evento/IframeRel/{{echo.id}}" name="p">
+
+    </iframe>
+</div>
+<script>
+    function print(){
+        window.frames["p"].print();
+    }
+</script>
+{{include.Bottom}}
+

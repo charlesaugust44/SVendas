@@ -3,6 +3,8 @@
 namespace App\Framework;
 
 
+use App\Framework\Authentication\CredentialsException;
+
 class Router
 {
     private $request;

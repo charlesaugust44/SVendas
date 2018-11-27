@@ -15,6 +15,7 @@ class ControllerEstoque
 
     public function __construct()
     {
+        Auth::sessionCheck(Auth::$LVL1);
         $this->manager = new Manager();
         $this->view = new View($this);
     }

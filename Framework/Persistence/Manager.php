@@ -72,15 +72,13 @@ class Manager extends Database
             $statement = $this->cnx->prepare($sql);
             $statement->execute();
         } else {
-            if($whereValue2 == null) {
+            if ($whereValue2 == null) {
                 $sql = "SELECT $columns FROM $tableName WHERE $field = :whereValue";
 
                 $statement = $this->cnx->prepare($sql);
                 $statement->bindValue(":whereValue", $whereValue);
                 $statement->execute();
-            }
-            else
-            {
+            } else {
                 $sql = "SELECT $columns FROM $tableName WHERE $field = :whereValue AND $field2 = :whereValue2";
 
                 $statement = $this->cnx->prepare($sql);
@@ -101,7 +99,7 @@ class Manager extends Database
             }
         }
 
-        return (count($return) == 0)? null : $return;
+        return (count($return) == 0) ? null : $return;
     }
 
     public function update($object, $whereValue, $field = "id")
@@ -154,5 +152,13 @@ class Manager extends Database
         }
 
         return null;
+    }
+
+    public function query($sql)
+    {
+        $statement = $this->cnx->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

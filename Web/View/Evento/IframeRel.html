@@ -1,0 +1,121 @@
+<meta charset="UTF-8">
+<link href="$css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .relatorio {
+        margin: auto auto;
+        border: solid 1px #ccc;
+        padding-top: 2rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .rows {
+        margin-bottom: 5rem;
+    }
+
+    .innerPadding {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .floatContainer {
+        width: 100%;
+        height: 8rem;
+    }
+
+    .floatContainer .left {
+        float: left;
+    }
+
+    .floatContainer .right {
+        float: right;
+    }
+
+    .table {
+        width: 95%;
+        margin: auto auto
+    }
+</style>
+
+<div class="relatorio">
+    <div class="title">
+        <h4>
+            Relatório de Vendas<br>
+            <small>
+                {{evento.getNome}}<br>
+                {{echo.data}}
+            </small>
+        </h4>
+    </div>
+
+    <div class="rows">
+        <h5>Total</h5>
+        <hr>
+        <table class="innerPadding">
+            <tr>
+                <th>Quantidade Total:</th>
+                <td>&emsp; x{{echo.qtdTotal}}</td>
+            </tr>
+            <tr>
+                <th>Receita Total:</th>
+                <td>&emsp; R$ {{echo.receitaTotal}}</td>
+            </tr>
+            <tr>
+                <th>Repasse DNA Total:</th>
+                <td>&emsp; R$ {{echo.repasseTotal}}</td>
+            </tr>
+        </table>
+    </div>
+    {{iterator.desconto@@
+    <div class="rows">
+        <h5>[[nomeProduto]]
+            <small>([[precoLista]])</small>
+        </h5>
+        <hr>
+        <div class="floatContainer">
+            <div class="left">
+                (Base de cálculo - 15%)<br>
+                Vendas <strong>SEM</strong> desconto: x[[qtdSemDesc]]<br>
+                <strong>Subtotal: R$ [[subtotalSem]]</strong><br>
+                <strong>Repasse DNA: R$ [[repasseSem]]</strong><br>
+            </div>
+            <div class="right">
+                (Base de cálculo - 10%)<br>
+                Vendas <strong>COM</strong> desconto: x[[qtdComDesc]]<br>
+                <strong>Subtotal: R$ [[subtotalCom]]</strong><br>
+                <strong>Repasse DNA: R$ [[repasseCom]]</strong><br>
+            </div>
+        </div>
+        <table class="table table-striped">
+            [[tableClientes]]
+        </table>
+    </div>
+    }}
+
+    {{iterator.semDesconto@@
+    <div class="rows">
+        <h5>[[nomeProduto]]
+            <small>([[precoLista]])</small>
+        </h5>
+        <hr>
+        <div class="floatContainer">
+            <div class="left">
+                (Base de cálculo - 15%)<br>
+                Vendas <strong>SEM</strong> desconto: x[[qtdSemDesc]]<br>
+                <strong>Subtotal: R$ [[subtotalSem]]</strong><br>
+                <strong>Repasse DNA: R$ [[repasseSem]]</strong><br>
+            </div>
+
+        </div>
+        <table class="table table-striped">
+            [[tableClientes]]
+        </table>
+    </div>
+    }}
+</div>
